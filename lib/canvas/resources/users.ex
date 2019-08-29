@@ -41,7 +41,7 @@ defmodule Canvas.Resources.Users do
 
   """
   @spec all_users_in_account(Client.t(), String.t() | integer, Keyword.t()) ::
-          {:ok | :error, Response.t()}
+          {:ok, list(%User{})} | {:error, Response.t()}
   def all_users_in_account(client, account_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_users_in_account, [client, account_id, options])
   end

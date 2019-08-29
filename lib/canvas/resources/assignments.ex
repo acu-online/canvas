@@ -44,7 +44,7 @@ defmodule Canvas.Resources.Assignments do
 
   """
   @spec all_assignments(Client.t(), String.t() | integer, Keyword.t()) ::
-          {:ok | :error, [Assignment.t()]}
+          {:ok, list(%Assignment{})} | {:error, Response.t()}
   def all_assignments(client, course_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_assignments, [client, course_id, options])
   end

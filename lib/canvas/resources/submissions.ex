@@ -61,7 +61,7 @@ defmodule Canvas.Resources.Submissions do
 
   """
   @spec all_assignment_submissions(Client.t(), atom, String.t() | integer, Keyword.t()) ::
-          {:ok | :error, Response.t()}
+          {:ok, list(%Submission{})} | {:error, Response.t()}
   def all_assignment_submissions(client, by, id, assignment_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_assignment_submissions, [
       client,

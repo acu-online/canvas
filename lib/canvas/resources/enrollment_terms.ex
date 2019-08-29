@@ -50,7 +50,7 @@ defmodule Canvas.Resources.EnrollmentTerms do
 
   """
   @spec all_enrollment_terms(Client.t(), String.t() | integer, Keyword.t()) ::
-          {:ok | :error, Response.t()}
+          {:ok, list(%EnrollmentTerm{})} | {:error, Response.t()}
   def all_enrollment_terms(client, account_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_enrollment_terms, [client, account_id, options])
   end

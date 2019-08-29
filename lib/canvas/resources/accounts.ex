@@ -5,7 +5,7 @@ defmodule Canvas.Resources.Accounts do
   """
 
   alias Canvas.{Client, Listing, Response}
-  alias Canvas.Resources.{Account, Course}
+  alias Canvas.Resources.Course
 
   def list_accounts() do
   end
@@ -62,7 +62,7 @@ defmodule Canvas.Resources.Accounts do
 
   """
   @spec all_active_courses_in_an_account(Client.t(), String.t() | integer, Keyword.t()) ::
-          {:ok | :error, Response.t()}
+          {:ok, list(%Course{})} | {:error, Response.t()}
   def all_active_courses_in_an_account(client, account_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_active_courses_in_an_account, [client, account_id, options])
   end

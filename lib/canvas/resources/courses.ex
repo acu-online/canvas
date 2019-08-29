@@ -4,7 +4,7 @@ defmodule Canvas.Resources.Courses do
   [course endpoints](https://canvas.instructure.com/doc/api/courses).
   """
 
-  alias Canvas.{Client, Listing, Response}
+  alias Canvas.{Client, Response}
   alias Canvas.Resources.Course
 
   def list_your_courses() do
