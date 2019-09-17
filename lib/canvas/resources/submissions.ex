@@ -52,7 +52,7 @@ defmodule Canvas.Resources.Submissions do
   @doc """
   List all submissions for an assignment automatically paginating if necessary.
 
-  This function will automatically page through all pages, returning all assignments.
+  This function will automatically page through all pages, returning all submissions.
 
   ## Examples:
 
@@ -60,7 +60,13 @@ defmodule Canvas.Resources.Submissions do
       {:ok, response} = Canvas.Resources.Submissions.all_assignment_submissions(client, :course, 101, 12345)
 
   """
-  @spec all_assignment_submissions(Client.t(), atom, String.t() | integer, Keyword.t()) ::
+  @spec all_assignment_submissions(
+          Client.t(),
+          atom,
+          String.t() | integer,
+          String.t() | integer,
+          Keyword.t()
+        ) ::
           {:ok, list(%Submission{})} | {:error, Response.t()}
   def all_assignment_submissions(client, by, id, assignment_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_assignment_submissions, [
