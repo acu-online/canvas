@@ -61,7 +61,7 @@ defmodule Canvas.Resources.Courses do
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, response} = Canvas.Resources.Courses.get_a_single_course(client, course_id = 101)
+      {:ok, response} = Canvas.Resources.Courses.get_a_single_course(client, 101)
 
   """
   @spec get_a_single_course(Client.t(), String.t() | integer, Keyword.t()) ::
@@ -70,7 +70,7 @@ defmodule Canvas.Resources.Courses do
     url = Client.versioned("/courses/#{course_id}")
 
     Client.get(client, url, options)
-    |> Response.parse(%{"data" => %Course{}})
+    |> Response.parse(%Course{})
   end
 
   @doc """
@@ -82,7 +82,7 @@ defmodule Canvas.Resources.Courses do
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, response} = Canvas.Resources.Courses.get_a_single_course_by_account(client, account_id = 1, course_id = 101)
+      {:ok, response} = Canvas.Resources.Courses.get_a_single_course_by_account(client, 1, 101)
 
   """
   @spec get_a_single_course_by_account(

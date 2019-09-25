@@ -14,14 +14,14 @@ defmodule Canvas.Resources.Submissions do
   Retrieve a paginated list of all existing submissions for an assignment.
 
   See:
-  - https://canvas.instructure.com/doc/api/accounts.html#method.accounts.courses_api
+  https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.index
 
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, response} = Canvas.Resources.EnrollmentTerms.list_enrollment_terms(client, :course, 101, 12345)
-      {:ok, response} = Canvas.Resources.EnrollmentTerms.list_enrollment_terms(client, :course, 101, 12345, per_page: 20, page: 2)
-      {:ok, response} = Canvas.Resources.EnrollmentTerms.list_enrollment_terms(client, :section, 1234, 12345)
+      {:ok, response} = Canvas.Resources.Submissions.list_assignment_submissions(client, :course, 101, 12345)
+      {:ok, response} = Canvas.Resources.Submissions.list_assignment_submissions(client, :course, 101, 12345, per_page: 20, page: 2)
+      {:ok, response} = Canvas.Resources.Submissions.list_assignment_submissions(client, :section, 1234, 12345)
 
   """
   @spec list_assignment_submissions(
@@ -81,7 +81,55 @@ defmodule Canvas.Resources.Submissions do
   def list_submissions_for_multiple_assignments() do
   end
 
-  def get_a_single_submissionupload_a_file() do
+  @doc """
+  Get a single submission, based on user id.
+
+  See:
+  https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.show
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :course, 101, 12345, 4321)
+      {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :course, 101, 12345, 4321, per_page: 20, page: 2)
+      {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :section, 1234, 12345, 4321)
+
+  """
+  @spec get_a_single_submission(
+          Client.t(),
+          atom,
+          String.t() | integer,
+          String.t() | integer,
+          String.t() | integer,
+          Keyword.t()
+        ) ::
+          {:ok | :error, Response.t()}
+  def get_a_single_submission(client, by, id, assignment_id, user_id, options \\ [])
+
+  def get_a_single_submission(client, :course, course_id, assignment_id, user_id, options) do
+    url =
+      Client.versioned(
+        "/courses/#{course_id}/assignments/#{assignment_id}/submissions/#{user_id}"
+      )
+
+    _get_a_single_submission(client, url, options)
+  end
+
+  def get_a_single_submission(client, :section, section_id, assignment_id, user_id, options) do
+    url =
+      Client.versioned(
+        "/sections/#{section_id}/assignments/#{assignment_id}/submissions/#{user_id}"
+      )
+
+    _get_a_single_submission(client, url, options)
+  end
+
+  defp _get_a_single_submission(client, url, options) do
+    Listing.get(client, url, options)
+    |> Response.parse(%Submission{assignment: %Assignment{}, course: %Course{}})
+  end
+
+  def upload_a_file() do
   end
 
   def grade_or_comment_on_a_submission() do

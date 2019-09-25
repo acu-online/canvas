@@ -19,8 +19,8 @@ defmodule Canvas.Resources.Assignments do
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, response} = Canvas.Resources.Assignments.list_assignments(client, course_id = 101)
-      {:ok, response} = Canvas.Resources.Assignments.list_assignments(client, course_id = 101, per_page: 50, page: 4)
+      {:ok, response} = Canvas.Resources.Assignments.list_assignments(client, 101)
+      {:ok, response} = Canvas.Resources.Assignments.list_assignments(client, 101, per_page: 50, page: 4)
 
   """
   @spec list_assignments(Client.t(), String.t() | integer, Keyword.t()) ::
@@ -40,7 +40,7 @@ defmodule Canvas.Resources.Assignments do
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, assignments} = Canvas.Reources.Assignments.all_assignments(client, course_id = 101)
+      {:ok, assignments} = Canvas.Reources.Assignments.all_assignments(client, 101)
 
   """
   @spec all_assignments(Client.t(), String.t() | integer, Keyword.t()) ::
@@ -55,7 +55,31 @@ defmodule Canvas.Resources.Assignments do
   def list_assignments_for_user() do
   end
 
-  def get_a_single_assignment() do
+  @doc """
+  Returns the assignment with the given id.
+
+  See:
+  https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.show
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Assignments.get_a_single_assignment(client, 101, 1234)
+      {:ok, response} = Canvas.Resources.Assignments.get_a_single_assignment(client, 101, 1234, per_page: 50, page: 4)
+
+  """
+  @spec get_a_single_assignment(
+          Client.t(),
+          String.t() | integer,
+          String.t() | integer,
+          Keyword.t()
+        ) ::
+          {:ok | :error, Response.t()}
+  def get_a_single_assignment(client, course_id, id, options \\ []) do
+    url = Client.versioned("/courses/#{course_id}/assignments/#{id}")
+
+    Listing.get(client, url, options)
+    |> Response.parse(%Assignment{})
   end
 
   def create_an_assignment() do
