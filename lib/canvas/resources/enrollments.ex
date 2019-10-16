@@ -65,7 +65,7 @@ defmodule Canvas.Resources.Enrollments do
   ## Examples:
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
-      {:ok, response} = Canvas.Resources.Submissions.all_enrollments(client, :course, 101, 12345)
+      {:ok, response} = Canvas.Resources.Enrollments.all_enrollments(client, :course, 101)
 
   """
   @spec all_enrollments(Client.t(), atom, String.t() | integer, Keyword.t()) ::
