@@ -25,6 +25,7 @@ defmodule Canvas.MixProject do
     [
       {:httpoison, "~> 1.5"},
       {:poison, "~> 4.0"},
+      {:uri_query, "~> 0.1.1"},
       {:exvcr, "~> 0.10", only: :test},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false}

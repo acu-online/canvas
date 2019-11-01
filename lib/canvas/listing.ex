@@ -8,7 +8,7 @@ defmodule Canvas.Listing do
           {:ok | :error, HTTPoison.Response.t() | HTTPoison.AsyncResponse.t()}
   def get(client, url, options \\ []), do: Client.get(client, url, format(options))
 
-  @known_params ~w(page per_page as_user_id)a
+  @known_params ~w(page per_page as_user_id include)a
 
   @doc """
   Format request options for list endpoints into HTTP params.
@@ -17,8 +17,12 @@ defmodule Canvas.Listing do
     {params, options} = Enum.reduce(@known_params, {[], options}, &extract_param/2)
 
     case params do
-      [] -> options
-      _ -> Keyword.merge(options, [params: params], fn _k, v1, v2 -> Keyword.merge(v1, v2) end)
+      [] ->
+        options
+
+      _ ->
+        Keyword.merge(options, [params: params], fn _k, v1, v2 -> Keyword.merge(v1, v2) end)
+        |> Keyword.update(:params, [], &UriQuery.params(&1, add_indices_to_lists: false))
     end
   end
 

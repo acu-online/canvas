@@ -5,7 +5,7 @@ defmodule Canvas.Resources.Submissions do
   """
 
   alias Canvas.{Client, Listing, Response}
-  alias Canvas.Resources.{Assignment, Course, Submission}
+  alias Canvas.Resources.{Assignment, Course, Submission, User}
 
   def submit_an_assignment() do
   end
@@ -126,7 +126,7 @@ defmodule Canvas.Resources.Submissions do
 
   defp _get_a_single_submission(client, url, options) do
     Listing.get(client, url, options)
-    |> Response.parse(%Submission{assignment: %Assignment{}, course: %Course{}})
+    |> Response.parse(%Submission{assignment: %Assignment{}, course: %Course{}, user: %User{}})
   end
 
   def upload_a_file() do
