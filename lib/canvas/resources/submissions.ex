@@ -46,7 +46,7 @@ defmodule Canvas.Resources.Submissions do
 
   defp _list_assignment_submissions(client, url, options) do
     Listing.get(client, url, options)
-    |> Response.parse([%Submission{assignment: %Assignment{}, course: %Course{}}])
+    |> Response.parse([%Submission{assignment: %Assignment{}, course: %Course{}, user: %User{}}])
   end
 
   @doc """
