@@ -8,7 +8,9 @@ defmodule Canvas.Resources.Accounts do
   alias Canvas.Resources.{Account, Course}
 
   @doc """
-  Retrieve a paginated list of courses in this account.
+  A paginated list of accounts that the current user can view or manage. 
+  Typically, students and even teachers will get an empty list in response, 
+  only account admins can view the accounts that they are in.
 
   See:
   - https://canvas.instructure.com/doc/api/accounts.html#method.accounts.index
@@ -29,7 +31,7 @@ defmodule Canvas.Resources.Accounts do
   end
 
   @doc """
-  List all active courses in an account automatically paginating if necessary.
+  List all accounts automatically paginating if necessary.
 
   This function will automatically page through all pages, returning all assignments.
 
@@ -53,7 +55,26 @@ defmodule Canvas.Resources.Accounts do
   def permissions() do
   end
 
-  def get_the_subaccounts_of_an_account() do
+  @doc """
+  List accounts that are sub-accounts of the given account.
+
+  See:
+  - https://canvas.instructure.com/doc/api/accounts.html#method.accounts.sub_accounts
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Accounts.get_the_subaccounts(client, account_id = 1)
+      {:ok, response} = Canvas.Resources.Accounts.get_the_subaccounts(client, account_id = 1, per_page: 50, page: 4)
+
+  """
+  @spec get_the_subaccounts(Client.t(), String.t() | integer, Keyword.t()) ::
+          {:ok | :error, Response.t()}
+  def get_the_subaccounts(client, account_id, options \\ []) do
+    url = Client.versioned("/accounts/#{account_id}/sub_accounts")
+
+    Listing.get(client, url, options)
+    |> Response.parse([%Course{}])
   end
 
   def get_the_terms_of_service() do
