@@ -5,9 +5,43 @@ defmodule Canvas.Resources.Accounts do
   """
 
   alias Canvas.{Client, Listing, Response}
-  alias Canvas.Resources.Course
+  alias Canvas.Resources.{Account, Course}
 
-  def list_accounts() do
+  @doc """
+  Retrieve a paginated list of courses in this account.
+
+  See:
+  - https://canvas.instructure.com/doc/api/accounts.html#method.accounts.index
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Accounts.list_accounts(client)
+      {:ok, response} = Canvas.Resources.Accounts.list_accounts(client, per_page: 50, page: 4)
+
+  """
+  @spec list_accounts(Client.t(), Keyword.t()) :: {:ok | :error, Response.t()}
+  def list_accounts(client, options \\ []) do
+    url = Client.versioned("/accounts")
+
+    Listing.get(client, url, options)
+    |> Response.parse([%Account{}])
+  end
+
+  @doc """
+  List all active courses in an account automatically paginating if necessary.
+
+  This function will automatically page through all pages, returning all assignments.
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Accounts.all_accounts(client)
+
+  """
+  @spec all_accounts(Client.t(), Keyword.t()) :: {:ok, list(%Account{})} | {:error, Response.t()}
+  def all_accounts(client, options \\ []) do
+    Listing.get_all(__MODULE__, :list_accounts, [client, options])
   end
 
   def list_accounts_for_course_admins() do
