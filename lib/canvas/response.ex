@@ -19,16 +19,18 @@ defmodule Canvas.Response do
           }
 
     def extract_pagination(links) when is_binary(links) do
-      [current_page, per_page, last_page] = process_link_header(links)
+      case process_link_header(links) do
+        [current_page, per_page, last_page] ->
+          %__MODULE__{
+            current_page: String.to_integer(current_page),
+            per_page: String.to_integer(per_page),
+            last_page: String.to_integer(last_page)
+          }
 
-      %__MODULE__{
-        current_page: String.to_integer(current_page),
-        per_page: String.to_integer(per_page),
-        last_page: String.to_integer(last_page)
-      }
+        _ ->
+          nil
+      end
     end
-
-    alias Canvas.Response.Pagination
 
     def extract_pagination(_), do: nil
 
