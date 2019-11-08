@@ -74,7 +74,7 @@ defmodule Canvas.Resources.Accounts do
     url = Client.versioned("/accounts/#{account_id}/sub_accounts")
 
     Listing.get(client, url, options)
-    |> Response.parse([%Course{}])
+    |> Response.parse([%Account{}])
   end
 
   def get_the_terms_of_service() do
