@@ -5,7 +5,7 @@ defmodule Canvas.Resources.Accounts do
   """
 
   alias Canvas.{Client, Listing, Response}
-  alias Canvas.Resources.{Account, Course}
+  alias Canvas.Resources.{Account, Course, EnrollmentTerm}
 
   @doc """
   A paginated list of accounts that the current user can view or manage. 
@@ -102,7 +102,7 @@ defmodule Canvas.Resources.Accounts do
     url = Client.versioned("/accounts/#{account_id}/courses")
 
     Listing.get(client, url, options)
-    |> Response.parse([%Course{}])
+    |> Response.parse([%Course{term: %EnrollmentTerm{}}])
   end
 
   @doc """

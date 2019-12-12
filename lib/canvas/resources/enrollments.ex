@@ -5,7 +5,7 @@ defmodule Canvas.Resources.Enrollments do
   """
 
   alias Canvas.{Client, Listing, Response}
-  alias Canvas.Resources.Enrollment
+  alias Canvas.Resources.{Enrollment, User}
 
   @doc """
   Depending on the URL given, return a paginated list of either
@@ -54,7 +54,7 @@ defmodule Canvas.Resources.Enrollments do
 
   defp _list_enrollments(client, url, options) do
     Listing.get(client, url, options)
-    |> Response.parse([%Enrollment{}])
+    |> Response.parse([%Enrollment{user: %User{}}])
   end
 
   @doc """

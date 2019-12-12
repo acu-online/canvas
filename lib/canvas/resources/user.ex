@@ -17,7 +17,7 @@ defmodule Canvas.Resources.User do
           integration_id: String.t(),
           login_id: String.t(),
           avatar_url: String.t(),
-          enrollments: any,
+          enrollments: [Canvas.Resources.Enrollment.t()],
           email: String.t(),
           locale: String.t(),
           last_login: String.t(),

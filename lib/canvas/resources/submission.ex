@@ -25,7 +25,7 @@ defmodule Canvas.Resources.Submission do
           user_id: integer,
           grader_id: integer,
           graded_at: String.t(),
-          user: any,
+          user: Canvas.Resources.User.t(),
           late: boolean,
           assignment_visible: boolean,
           excused: boolean,
