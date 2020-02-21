@@ -31,6 +31,7 @@ defmodule Canvas.Resources.Course do
           syllabus_body: String.t(),
           needs_grading_count: integer,
           term: Canvas.Resources.EnrollmentTerm.t(),
+          account: Canvas.Resources.Account.t(),
           course_progress: any,
           apply_assignment_group_weights: boolean,
           permissions: any,
@@ -60,7 +61,7 @@ defmodule Canvas.Resources.Course do
   defstruct ~w(id sis_course_id uuid integration_id sis_import_id name course_code
                workflow_state account_id root_account_id enrollment_term_id grading_standard_id
                created_at start_at end_at locale enrollments total_students calendar
-               default_view syllabus_body needs_grading_count term course_progress
+               default_view syllabus_body needs_grading_count term account course_progress
                apply_assignment_group_weights permissions is_public is_public_to_auth_users
                public_syllabus public_syllabus_to_auth public_description storage_quota_mb
                storage_quota_used_mb hide_final_grades license allow_student_assignment_edits

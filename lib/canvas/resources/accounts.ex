@@ -102,7 +102,7 @@ defmodule Canvas.Resources.Accounts do
     url = Client.versioned("/accounts/#{account_id}/courses")
 
     Listing.get(client, url, options)
-    |> Response.parse([%Course{term: %EnrollmentTerm{}}])
+    |> Response.parse([%Course{term: %EnrollmentTerm{}, account: %Account{}}])
   end
 
   @doc """
