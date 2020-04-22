@@ -54,4 +54,22 @@ defmodule Canvas.Resources.EnrollmentTerms do
   def all_enrollment_terms(client, account_id, options \\ []) do
     Listing.get_all(__MODULE__, :list_enrollment_terms, [client, account_id, options])
   end
+
+  @doc """
+  Retrieves the details for an enrollment term in the account. Includes overrides by default.
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.EnrollmentTerms.get_enrollment_term(client, account_id = 1, term_id = 10)
+
+  """
+  @spec get_enrollment_term(Client.t(), String.t() | integer, String.t() | integer, Keyword.t()) ::
+          {:ok, %EnrollmentTerm{}} | {:error, Response.t()}
+  def get_enrollment_term(client, account_id, id, options \\ []) do
+    url = Client.versioned("/accounts/#{account_id}/terms/#{id}")
+
+    Listing.get(client, url, options)
+    |> Response.parse(%EnrollmentTerm{})
+  end
 end
