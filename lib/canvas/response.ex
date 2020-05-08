@@ -52,8 +52,10 @@ defmodule Canvas.Response do
   end
 
   defp decode(%HTTPoison.Response{body: ""}, _format), do: nil
-  defp decode(%HTTPoison.Response{body: body}, nil), do: Poison.decode!(body)
-  defp decode(%HTTPoison.Response{body: body}, format), do: Poison.decode!(body, as: format)
+  defp decode(%HTTPoison.Response{body: body}, nil), do: Poison.decode!(body, keys: :atoms)
+
+  defp decode(%HTTPoison.Response{body: body}, format),
+    do: Poison.decode!(body, keys: :atoms, as: format)
 
   defp extract_data(data, data_key) when is_map(data), do: Map.get(data, data_key, data)
   defp extract_data(data, _data_key), do: data
