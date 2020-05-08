@@ -5,7 +5,7 @@ defmodule Canvas.Resources.Courses do
   """
 
   alias Canvas.{Client, Response}
-  alias Canvas.Resources.Course
+  alias Canvas.Resources.{Account, Course, EnrollmentTerm}
 
   def list_your_courses() do
   end
@@ -70,7 +70,7 @@ defmodule Canvas.Resources.Courses do
     url = Client.versioned("/courses/#{course_id}")
 
     Client.get(client, url, options)
-    |> Response.parse(%Course{})
+    |> Response.parse(%Course{term: %EnrollmentTerm{}, account: %Account{}})
   end
 
   @doc """
@@ -96,7 +96,7 @@ defmodule Canvas.Resources.Courses do
     url = Client.versioned("/accounts/#{account_id}/courses/#{course_id}")
 
     Client.get(client, url, options)
-    |> Response.parse(%{"data" => %Course{}})
+    |> Response.parse(%Course{term: %EnrollmentTerm{}, account: %Account{}})
   end
 
   def update_a_course() do
