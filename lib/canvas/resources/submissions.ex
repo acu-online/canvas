@@ -78,7 +78,49 @@ defmodule Canvas.Resources.Submissions do
     ])
   end
 
-  def list_submissions_for_multiple_assignments() do
+  @doc """
+  A paginated list of all existing submissions for a given set of students and assignments.
+
+  See:
+  https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
+
+  ## Examples:
+
+      client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
+      {:ok, response} = Canvas.Resources.Submissions.list_submissions_for_multiple_assignments(client, :course, 101, params: [assignment_ids: [97, 98, 99]])
+      {:ok, response} = Canvas.Resources.Submissions.list_submissions_for_multiple_assignments(client, :course, 101, params: [student_ids: [1001, 1002], grouped: true])
+      {:ok, response} = Canvas.Resources.Submissions.list_submissions_for_multiple_assignments(client, :section, 1234)
+
+  """
+  @spec list_submissions_for_multiple_assignments(
+          Client.t(),
+          atom,
+          String.t() | integer,
+          Keyword.t()
+        ) ::
+          {:ok | :error, Response.t()}
+  def list_submissions_for_multiple_assignments(client, by, id, options \\ [])
+
+  def list_submissions_for_multiple_assignments(client, :course, course_id, options) do
+    url = Client.versioned("/courses/#{course_id}/students/submissions")
+    _list_submissions_for_multiple_assignments(client, url, options)
+  end
+
+  def list_submissions_for_multiple_assignments(client, :section, section_id, options) do
+    url = Client.versioned("/sections/#{section_id}/students/submissions")
+    _list_submissions_for_multiple_assignments(client, url, options)
+  end
+
+  defp _list_submissions_for_multiple_assignments(client, url, options) do
+    format =
+      if Keyword.get(options, :params, []) |> Keyword.get(:grouped) do
+        [%{submissions: [%Submission{assignment: %Assignment{}, course: %Course{}}]}]
+      else
+        [%Submission{assignment: %Assignment{}, course: %Course{}, user: %User{}}]
+      end
+
+    Listing.get(client, url, options)
+    |> Response.parse(format)
   end
 
   @doc """
@@ -91,7 +133,7 @@ defmodule Canvas.Resources.Submissions do
 
       client = %Canvas.Client{access_token: "a1b2c3d4", base_url: "https://instructure.test"}
       {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :course, 101, 12345, 4321)
-      {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :course, 101, 12345, 4321, per_page: 20, page: 2)
+      {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :course, 101, 12345, 4321, include: "submission_comments")
       {:ok, response} = Canvas.Resources.Submissions.get_a_single_submission(client, :section, 1234, 12345, 4321)
 
   """
