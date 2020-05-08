@@ -22,8 +22,8 @@ defmodule Canvas.Listing do
 
       _ ->
         Keyword.merge(options, [params: params], fn _k, v1, v2 -> Keyword.merge(v1, v2) end)
-        |> Keyword.update(:params, [], &UriQuery.params(&1, add_indices_to_lists: false))
     end
+    |> Keyword.update(:params, [], &UriQuery.params(&1, add_indices_to_lists: false))
   end
 
   defp extract_param(option, {params, options}) do
