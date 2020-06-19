@@ -35,7 +35,7 @@ defmodule Canvas.Resources.EnrollmentTerms do
     url = Client.versioned("/accounts/#{account_id}/terms")
 
     Listing.get(client, url, options)
-    |> Response.parse(%{"enrollment_terms" => [%EnrollmentTerm{}]}, "enrollment_terms")
+    |> Response.parse(%{"enrollment_terms" => [%EnrollmentTerm{}]}, :enrollment_terms)
   end
 
   @doc """
