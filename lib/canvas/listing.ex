@@ -73,7 +73,12 @@ defmodule Canvas.Listing do
       {:ok, response} ->
         all = all ++ response.data
         next_page = current_page + 1
-        remaining = response.pagination.last_page - current_page
+        remaining = 0
+        remaining = if response.pagination == nil do
+                remaining
+        else
+                response.pagination.last_page - current_page
+        end
         get_pages(module, function, params, all, next_page, remaining)
 
       {:error, response} ->
