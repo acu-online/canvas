@@ -64,12 +64,18 @@ defmodule Canvas.Listing do
     )
   end
 
+  defp get_pages(all), do {:ok, all}
+
   defp get_pages(module, function, params, all, current_page) do
     case apply(module, function, add_page_param(params, current_page)) do
       {:ok, response} ->
         all = all ++ response.data
         next_page = current_page + 1
-        get_pages(module, function, params, all, next_page)
+        if(response.pagination != nil) do
+          get_pages(module, function, params, all, next_page)
+        else 
+          get_pages(all)
+        end
 
       {:error, response} ->
         {:error, response}
