@@ -70,15 +70,15 @@ defmodule Canvas.Listing do
     case apply(module, function, add_page_param(params, current_page)) do
       {:ok, response} ->
         all = all ++ response.data
-        next_page = current_page + 1
+        
         if response.pagination == nil do
-          get_pages(module, function, params, all, next_page)
+          get_pages(all)
         else 
-          remaining = response.pagination.last_page - current_page
-          if remaining == 0 do
-            get_pages(all)
-          else 
-            get_pages(module, function, params, all, next_page)
+          if response.pagination.next_page != nil do
+              next_page = response.pagination.next_page
+              get_pages(module, function, params, all, next_page)
+          else
+              get_pages(all)
           end
         end
 
