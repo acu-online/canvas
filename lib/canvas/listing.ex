@@ -64,7 +64,7 @@ defmodule Canvas.Listing do
     )
   end
 
-  defp get_pages(all), do {:ok, all}
+  defp get_pages(all), do: {:ok, all}
 
   defp get_pages(module, function, params, all, current_page) do
     case apply(module, function, add_page_param(params, current_page)) do
