@@ -22,8 +22,8 @@ defmodule Canvas.Response do
       case process_link_header(links) do
         [current_page, per_page, next_page] ->
           %__MODULE__{
-            current_page: current_page
-            per_page: per_page
+            current_page: current_page,
+            per_page: per_page,
             next_page: next_page
           }
 
