@@ -38,7 +38,6 @@ defmodule Canvas.Listing do
   end
 
   @first_page 1
-  @unkown_pages_left nil
 
   @doc """
   Iterates over all pages of a listing endpoint and returns the union of all
@@ -61,25 +60,18 @@ defmodule Canvas.Listing do
       function,
       params,
       _all = [],
-      _page = @first_page,
-      _pages_left = @unkown_pages_left
+      _page = @first_page
     )
   end
 
-  defp get_pages(_module, _function, _params, all, _page, _pages_left = 0), do: {:ok, all}
+  defp get_pages(_module, _function, _params, all, _page), do: {:ok, all}
 
-  defp get_pages(module, function, params, all, current_page, _pages_left) do
+  defp get_pages(module, function, params, all, current_page) do
     case apply(module, function, add_page_param(params, current_page)) do
       {:ok, response} ->
         all = all ++ response.data
         next_page = current_page + 1
-        remaining = 0
-        remaining = if response.pagination == nil do
-                remaining
-        else
-                response.pagination.last_page - current_page
-        end
-        get_pages(module, function, params, all, next_page, remaining)
+        get_pages(module, function, params, all, next_page)
 
       {:error, response} ->
         {:error, response}

@@ -10,21 +10,19 @@ defmodule Canvas.Response do
         }
 
   defmodule Pagination do
-    defstruct ~w(current_page per_page last_page)a
+    defstruct ~w(current_page per_page)a
 
     @type t :: %__MODULE__{
             current_page: integer,
-            per_page: integer,
-            last_page: integer
+            per_page: integer
           }
 
     def extract_pagination(links) when is_binary(links) do
       case process_link_header(links) do
-        [current_page, per_page, last_page] ->
+        [current_page, per_page] ->
           %__MODULE__{
             current_page: String.to_integer(current_page),
             per_page: String.to_integer(per_page),
-            last_page: String.to_integer(last_page)
           }
 
         _ ->
@@ -36,7 +34,7 @@ defmodule Canvas.Response do
 
     defp process_link_header(links) do
       regex =
-        ~r/<.*page\=(\d+)&per_page\=(\d+).*>; rel=\"current\".*<.*page=(\d+)&.*>; rel=\"last\"/
+        ~r/<.*page\=(\d+)&per_page\=(\d+).*>; rel=\"current\".*<.*page=(\d+)&.*>;/
 
       Regex.run(regex, links, capture: :all_but_first)
     end
