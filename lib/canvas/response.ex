@@ -36,7 +36,7 @@ defmodule Canvas.Response do
 
     defp process_link_header(links) do
       regex =
-        ~r/<.*page\=(\d+)&per_page\=(\d+).*>; rel=\"current\".*<.*(\?\&)page=([a-zA-Z0-9:]+)&.*>; rel=\"next\"/
+        ~r/<.*page\=(\d+)&per_page\=(\d+).*>; rel=\"current\".*<.*(\?|\&)page=([a-zA-Z0-9:]+)&.*>; rel=\"next\"/
 
       Regex.run(regex, links, capture: :all_but_first)
     end
