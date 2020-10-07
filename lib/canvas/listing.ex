@@ -71,7 +71,7 @@ defmodule Canvas.Listing do
       {:ok, response} ->
         all = all ++ response.data
         next_page = current_page + 1
-        if(response.pagination != nil) do
+        if response.pagination != nil do
           get_pages(module, function, params, all, next_page)
         else 
           get_pages(all)
